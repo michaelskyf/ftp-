@@ -1,9 +1,9 @@
-![GNU/Linux](https://github.com/michaelskyf/ftp/actions/workflows/linux.yml/badge.svg)
-![MacOS](https://github.com/michaelskyf/ftp/actions/workflows/macos.yml/badge.svg)
+![GNU/Linux](https://github.com/michaelskyf/ftp-cpp/actions/workflows/linux.yml/badge.svg)
+![MacOS](https://github.com/michaelskyf/ftp-cpp/actions/workflows/macos.yml/badge.svg)
 
 ⚠️ Work in Progress ⚠️<br>
 
-# Simple ftp server written in C
+# Simple ftp server written in C++
 
 ### Supported OS
 - Unix
