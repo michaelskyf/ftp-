@@ -7,54 +7,48 @@
  * @brief Test if server accepts both IPv4 and IPv6 addresses
  *
  */
-TEST(server, sample_test)
+TEST(server, Socket)
 {
-	const char *test_addresses[] =
+	struct test
 	{
-		"127.0.0.1",
-		"::FFFF:127.0.0.1",
-		"::1",
+		const char *address;
+		const bool result;
+		const bool does_throw;
 	};
 
-	const char *invalid[] =
+	/*  */
+	const struct test test_addresses[]
 	{
-		"1270.0.1,",
-		"127.0.0.1,",
-		":FFFF:127.0.0.1",
-		"::xd:1",
+		{"127.0.0.1", true, false},
+		{"::1", true, false},
+		{"::FFFF:127.0.0.1", true, false},
+		{nullptr, true, false},
+
+		{":FFFF:127.0.0.1", false, true},
+		{"127.0.0.1,", false, true},
+		{"1270.0.1", false, true},
 	};
 
-	size_t addr_len = sizeof(test_addresses)/sizeof(*test_addresses);
-	size_t inv_len = sizeof(invalid)/sizeof(*invalid);
-	Socket *sl;
+	size_t len = sizeof(test_addresses)/sizeof(*test_addresses);
 
 	/* Valid addresses */
-	for(size_t i = 0; i < addr_len; i++)
+	for(size_t i = 0; i < len; i++)
 	{
-		sl = nullptr;
-		EXPECT_NO_THROW(sl = new Socket(test_addresses[i], 8787));
-		EXPECT_NE(sl, nullptr);
-		delete sl;
-	}
+		const struct test *t = &test_addresses[i];
+		Socket *sl = nullptr;
 
-	/* Invalid addresses */
-	for(size_t i = 0; i < inv_len; i++)
-	{
-		sl = nullptr;
-		EXPECT_THROW(sl = new Socket(invalid[i], 8787), std::runtime_error);
-		EXPECT_EQ(sl, nullptr);
-		if(sl != nullptr)
+		if(t->does_throw)
 		{
-			delete sl;
+			EXPECT_THROW(sl = new Socket(t->address, 8787), std::runtime_error);
 		}
-	}
+		else
+		{
+			EXPECT_NO_THROW(sl = new Socket(t->address, 8787));
+		}
 
-	/* NULL */
-	sl = nullptr;
-	EXPECT_NO_THROW(sl = new Socket(nullptr, 8787));
-	EXPECT_NE(sl, nullptr);
-	if(sl != nullptr)
-	{
-		delete sl;
+		EXPECT_EQ((bool)sl, t->result);
+
+		if(sl != nullptr)
+			delete sl;
 	}
 }

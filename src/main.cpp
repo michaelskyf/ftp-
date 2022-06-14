@@ -12,6 +12,7 @@
 #include <unistd.h>
 
 #define DEFAULT_PORT (uint16_t)8787
+#define DEFAULT_WELCOME_MSG "220 Good morning sir. Please kindly do the needful\n"
 
 struct aport
 {
@@ -102,7 +103,7 @@ static void args_parse(int argc, char *argv[])
 	struct aport tmp_aport = {nullptr, DEFAULT_PORT};
 	args.addresses.push_back(tmp_aport);
 
-	args.welcome_msg = "220 Good morning sir. Please kindly do the needful\n";
+	args.welcome_msg = DEFAULT_WELCOME_MSG;
 
 	struct option long_options[] =
 	{
