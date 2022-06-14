@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cstdio>
 #include <stdexcept>
 #include <string.h>
 #include <string>
@@ -10,19 +9,19 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-class SocketListener
+class Socket
 {
 	public:
 
 	/**
-	 * @brief Initialize SocketListener
+	 * @brief Initialize Socket
 	 *
 	 * @param[in]	address		IPv4, IPv6 or hostname. If NULL will listen on all addresses
 	 * @param[in]	port		Port number (0 - 65535)
-	 * @param[in]	timeout		Socket timeout (int seconds)
 	 *
+	 * @throws	std::runtime_error
 	 */
-	SocketListener(const char *address, in_port_t port)
+	Socket(const char *address, in_port_t port)
 	{
 		int v = 1;
 		int sockopt_val;
@@ -82,7 +81,7 @@ class SocketListener
 		}
 	}
 
-	~SocketListener()
+	~Socket(void)
 	{
 		close(sockfd);
 	}
